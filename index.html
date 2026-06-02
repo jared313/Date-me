@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Will you go on a date with me? 💕</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;1,500&family=Quicksand:wght@400;500;600&display=swap" rel="stylesheet" />
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            display: ['"Playfair Display"', 'serif'],
+            body: ['Quicksand', 'sans-serif'],
+          },
+          colors: {
+            rose: {
+              blush: '#ffe4ec',
+              petal: '#ffb3c6',
+              deep: '#c9184a',
+              wine: '#a4133c',
+            },
+          },
+        },
+      },
+    };
+  </script>
+  <style>
+    body {
+      font-family: 'Quicksand', sans-serif;
+      overflow: hidden;
+    }
+
+    .bg-romantic {
+      background: linear-gradient(135deg, #1a0a12 0%, #2d0f1f 25%, #4a1530 50%, #6b1d42 75%, #8b2252 100%);
+    }
+
+    .floating-heart {
+      position: absolute;
+      opacity: 0.15;
+      animation: float 8s ease-in-out infinite;
+      pointer-events: none;
+      user-select: none;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      50% { transform: translateY(-20px) rotate(5deg); }
+    }
+
+    @keyframes pulse-glow {
+      0%, 100% { box-shadow: 0 0 20px rgba(255, 105, 180, 0.4); }
+      50% { box-shadow: 0 0 40px rgba(255, 105, 180, 0.7); }
+    }
+
+    .btn-yes {
+      animation: pulse-glow 2s ease-in-out infinite;
+    }
+
+    #no-flee-layer {
+      position: fixed;
+      inset: 0;
+      z-index: 25;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    #no-btn {
+      position: absolute;
+      pointer-events: auto;
+      transition: left 0.22s ease-out, top 0.22s ease-out;
+      opacity: 1;
+      visibility: visible;
+    }
+
+    #pleading-header {
+      transition: opacity 0.5s ease, transform 0.7s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    #pleading-header.hidden-header {
+      opacity: 0;
+      transform: translateY(-100%) scale(0.9);
+      pointer-events: none;
+    }
+
+    #pleading-header.visible-header {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+
+    #pleading-header.visible-header .pleading-banner {
+      animation: banner-enter 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards,
+                 banner-glow 2.5s ease-in-out 0.8s infinite;
+    }
+
+    #pleading-header.visible-header .pleading-banner-wrap {
+      animation: banner-shake 4s ease-in-out 1.2s infinite;
+    }
+
+    #pleading-header.visible-header .pleading-text {
+      animation: text-pop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) 0.15s both,
+                 text-shimmer 3s ease-in-out 0.8s infinite,
+                 text-pulse 2s ease-in-out 1s infinite;
+    }
+
+    @keyframes text-pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.03); }
+    }
+
+    @keyframes banner-enter {
+      0% {
+        opacity: 0;
+        transform: translateY(-30px) scale(0.85);
+      }
+      70% {
+        transform: translateY(4px) scale(1.03);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    @keyframes banner-glow {
+      0%, 100% {
+        box-shadow: 0 0 24px rgba(255, 105, 180, 0.5),
+                    0 8px 32px rgba(201, 24, 74, 0.35),
+                    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+      }
+      50% {
+        box-shadow: 0 0 48px rgba(255, 105, 180, 0.85),
+                    0 12px 40px rgba(201, 24, 74, 0.55),
+                    inset 0 1px 0 rgba(255, 255, 255, 0.35);
+      }
+    }
+
+    @keyframes banner-shake {
+      0%, 88%, 100% { transform: translateX(0) rotate(0deg); }
+      90% { transform: translateX(-3px) rotate(-0.5deg); }
+      92% { transform: translateX(3px) rotate(0.5deg); }
+      94% { transform: translateX(-2px) rotate(-0.3deg); }
+      96% { transform: translateX(2px) rotate(0.3deg); }
+    }
+
+    @keyframes text-pop {
+      0% {
+        opacity: 0;
+        transform: scale(0.92);
+        letter-spacing: -0.02em;
+      }
+      100% {
+        opacity: 1;
+        transform: scale(1);
+        letter-spacing: normal;
+      }
+    }
+
+    @keyframes text-shimmer {
+      0%, 100% {
+        color: #ffe4ec;
+        text-shadow: 0 0 16px rgba(255, 182, 193, 0.7),
+                     0 2px 10px rgba(0, 0, 0, 0.45);
+      }
+      50% {
+        color: #ffffff;
+        text-shadow: 0 0 28px rgba(255, 105, 180, 1),
+                     0 0 48px rgba(255, 182, 193, 0.6),
+                     0 2px 10px rgba(0, 0, 0, 0.45);
+      }
+    }
+
+    .pleading-text {
+      color: #ffe4ec;
+    }
+
+    .sparkle {
+      position: absolute;
+      width: 4px;
+      height: 4px;
+      background: white;
+      border-radius: 50%;
+      animation: twinkle 3s ease-in-out infinite;
+    }
+
+    @keyframes twinkle {
+      0%, 100% { opacity: 0.2; transform: scale(1); }
+      50% { opacity: 0.9; transform: scale(1.4); }
+    }
+  </style>
+</head>
+<body class="bg-romantic min-h-screen flex flex-col items-center justify-center relative">
+
+  <!-- Floating hearts background -->
+  <div class="floating-heart text-6xl top-[8%] left-[10%]" style="animation-delay: 0s;">💗</div>
+  <div class="floating-heart text-5xl top-[20%] right-[12%]" style="animation-delay: 1.5s;">🌹</div>
+  <div class="floating-heart text-7xl bottom-[15%] left-[8%]" style="animation-delay: 3s;">💞</div>
+  <div class="floating-heart text-4xl bottom-[25%] right-[15%]" style="animation-delay: 2s;">✨</div>
+  <div class="floating-heart text-5xl top-[45%] left-[5%]" style="animation-delay: 4s;">💖</div>
+  <div class="floating-heart text-6xl top-[60%] right-[6%]" style="animation-delay: 0.8s;">🌸</div>
+
+  <!-- Sparkles -->
+  <div class="sparkle top-[12%] left-[30%]" style="animation-delay: 0.3s;"></div>
+  <div class="sparkle top-[25%] left-[70%]" style="animation-delay: 1.1s;"></div>
+  <div class="sparkle top-[70%] left-[20%]" style="animation-delay: 0.7s;"></div>
+  <div class="sparkle top-[80%] left-[85%]" style="animation-delay: 1.8s;"></div>
+  <div class="sparkle top-[40%] left-[50%]" style="animation-delay: 2.2s;"></div>
+
+  <!-- No button lives in background layer only (behind main UI) -->
+  <div id="no-flee-layer" aria-hidden="false">
+    <button
+      id="no-btn"
+      type="button"
+      class="absolute pointer-events-auto font-body font-semibold text-lg px-10 py-3 rounded-full bg-white/10 text-rose-blush/90 border border-white/25 hover:bg-white/15 shadow-lg backdrop-blur-sm"
+    >
+      No
+    </button>
+  </div>
+
+  <!-- Pleading header (hidden until No button moves) -->
+  <header
+    id="pleading-header"
+    class="hidden-header fixed top-0 left-0 right-0 z-30 px-4 pt-5 pb-2 text-center"
+  >
+    <div class="pleading-banner-wrap max-w-3xl mx-auto">
+      <div class="pleading-banner px-5 py-4 sm:px-8 sm:py-5 rounded-2xl border-2 border-rose-petal/60 bg-gradient-to-br from-rose-wine/90 via-rose-deep/85 to-pink-900/90 backdrop-blur-md">
+        <p class="pleading-text font-display font-bold text-lg sm:text-xl md:text-2xl leading-snug drop-shadow-[0_2px_8px_rgba(0,0,0,0.4)]">
+          you can't say no😭 i've been coding this website the whole night just to ask you out🥺
+        </p>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main content -->
+  <main class="relative z-20 flex flex-col items-center justify-center px-6 text-center max-w-xl pointer-events-auto">
+    <div id="question-card" class="mb-10 p-8 rounded-3xl bg-white/5 backdrop-blur-sm border border-white/10 shadow-2xl">
+      <h1 class="font-display text-3xl sm:text-4xl md:text-5xl text-rose-blush leading-tight tracking-wide">
+        can i take you for a date🌹💞
+      </h1>
+    </div>
+
+    <div id="buttons-area" class="relative w-full min-h-[120px] flex items-center justify-center gap-6 flex-wrap">
+      <button
+        id="yes-btn"
+        type="button"
+        class="btn-yes font-body font-semibold text-lg px-10 py-3 rounded-full bg-gradient-to-r from-rose-petal to-pink-400 text-rose-wine hover:from-pink-300 hover:to-rose-petal hover:scale-105 active:scale-95 transition-transform duration-200 shadow-lg border border-white/20"
+      >
+        Yes 💕
+      </button>
+      <span
+        id="no-btn-spacer"
+        class="font-body font-semibold text-lg px-10 py-3 rounded-full opacity-0 pointer-events-none select-none"
+        aria-hidden="true"
+      >No</span>
+    </div>
+  </main>
+
+  <!-- Success overlay (hidden by default) -->
+  <div
+    id="success-overlay"
+    class="fixed inset-0 z-30 flex items-center justify-center bg-black/60 backdrop-blur-md opacity-0 pointer-events-none transition-opacity duration-700"
+  >
+    <div class="text-center px-8 transform scale-90 transition-transform duration-700" id="success-card">
+      <p class="text-7xl mb-6">🥰💐</p>
+      <h2 class="font-display text-4xl sm:text-5xl text-rose-blush">Yay!! It's a date!</h2>
+    </div>
+  </div>
+
+  <script>
+    const noBtn = document.getElementById('no-btn');
+    const yesBtn = document.getElementById('yes-btn');
+    const questionCard = document.getElementById('question-card');
+    const pleadingHeader = document.getElementById('pleading-header');
+    const successOverlay = document.getElementById('success-overlay');
+    const successCard = document.getElementById('success-card');
+
+    let hasMoved = false;
+    let noPos = { left: 0, top: 0 };
+    const EDGE_PADDING = 16;
+    const FORBIDDEN_GAP = 20;
+    const FLEE_DISTANCE = 90;
+    const FLEE_STRENGTH = 1.1;
+
+    function expandRect(rect, gap) {
+      return {
+        left: rect.left - gap,
+        top: rect.top - gap,
+        right: rect.right + gap,
+        bottom: rect.bottom + gap,
+      };
+    }
+
+    function rectsOverlap(a, b) {
+      return !(a.left >= b.right || a.right <= b.left || a.top >= b.bottom || a.bottom <= b.top);
+    }
+
+    function getForbiddenRects() {
+      const rects = [];
+      if (questionCard) rects.push(expandRect(questionCard.getBoundingClientRect(), FORBIDDEN_GAP));
+      if (yesBtn) rects.push(expandRect(yesBtn.getBoundingClientRect(), FORBIDDEN_GAP));
+      if (pleadingHeader.classList.contains('visible-header')) {
+        rects.push(expandRect(pleadingHeader.getBoundingClientRect(), FORBIDDEN_GAP));
+      }
+      return rects;
+    }
+
+    function buttonRectAt(left, top, w, h) {
+      return { left, top, right: left + w, bottom: top + h };
+    }
+
+    function isSafePosition(left, top, w, h, forbidden) {
+      const btn = buttonRectAt(left, top, w, h);
+      const maxLeft = window.innerWidth - w - EDGE_PADDING;
+      const maxTop = window.innerHeight - h - EDGE_PADDING;
+
+      if (left < EDGE_PADDING || top < EDGE_PADDING || left > maxLeft || top > maxTop) {
+        return false;
+      }
+      return !forbidden.some((zone) => rectsOverlap(btn, zone));
+    }
+
+    function setNoPosition(left, top, fleeAngle) {
+      const w = noBtn.offsetWidth;
+      const h = noBtn.offsetHeight;
+      const forbidden = getForbiddenRects();
+      const safe = resolveSafePosition(left, top, w, h, forbidden, fleeAngle);
+      noPos.left = safe.left;
+      noPos.top = safe.top;
+      noBtn.style.left = safe.left + 'px';
+      noBtn.style.top = safe.top + 'px';
+    }
+
+    function resolveSafePosition(left, top, w, h, forbidden, fleeAngle) {
+      if (isSafePosition(left, top, w, h, forbidden)) {
+        return { left, top };
+      }
+
+      const currentLeft = parseFloat(noBtn.style.left) || noPos.left;
+      const currentTop = parseFloat(noBtn.style.top) || noPos.top;
+      const baseX = Number.isFinite(currentLeft) ? currentLeft : left;
+      const baseY = Number.isFinite(currentTop) ? currentTop : top;
+
+      if (fleeAngle !== undefined) {
+        for (let dist = 20; dist <= 320; dist += 20) {
+          for (const offset of [0, 0.35, -0.35, 0.7, -0.7]) {
+            const angle = fleeAngle + offset;
+            const tryLeft = baseX + Math.cos(angle) * dist;
+            const tryTop = baseY + Math.sin(angle) * dist;
+            if (isSafePosition(tryLeft, tryTop, w, h, forbidden)) {
+              return { left: tryLeft, top: tryTop };
+            }
+          }
+        }
+      }
+
+      for (let dist = 24; dist <= 280; dist += 24) {
+        for (let i = 0; i < 16; i++) {
+          const angle = (Math.PI * 2 * i) / 16;
+          const tryLeft = baseX + Math.cos(angle) * dist;
+          const tryTop = baseY + Math.sin(angle) * dist;
+          if (isSafePosition(tryLeft, tryTop, w, h, forbidden)) {
+            return { left: tryLeft, top: tryTop };
+          }
+        }
+      }
+
+      const marginSpot = findMarginSafePosition(w, h, forbidden);
+      if (marginSpot) return marginSpot;
+
+      return findRandomSafePosition(w, h, forbidden);
+    }
+
+    function findMarginSafePosition(w, h, forbidden) {
+      const maxLeft = window.innerWidth - w - EDGE_PADDING;
+      const maxTop = window.innerHeight - h - EDGE_PADDING;
+      const candidates = [];
+
+      for (const zone of forbidden) {
+        candidates.push(
+          { left: zone.right, top: zone.top },
+          { left: zone.right, top: zone.bottom - h },
+          { left: zone.left - w, top: zone.top },
+          { left: zone.left - w, top: zone.bottom - h },
+          { left: zone.left, top: zone.bottom },
+          { left: zone.right - w, top: zone.bottom },
+          { left: zone.left, top: zone.top - h },
+          { left: zone.right - w, top: zone.top - h }
+        );
+      }
+
+      candidates.push(
+        { left: EDGE_PADDING, top: EDGE_PADDING },
+        { left: maxLeft, top: EDGE_PADDING },
+        { left: EDGE_PADDING, top: maxTop },
+        { left: maxLeft, top: maxTop }
+      );
+
+      for (const spot of candidates) {
+        if (isSafePosition(spot.left, spot.top, w, h, forbidden)) {
+          return spot;
+        }
+      }
+      return null;
+    }
+
+    function findRandomSafePosition(w, h, forbidden) {
+      const maxLeft = window.innerWidth - w - EDGE_PADDING;
+      const maxTop = window.innerHeight - h - EDGE_PADDING;
+
+      for (let attempt = 0; attempt < 80; attempt++) {
+        const left = EDGE_PADDING + Math.random() * (maxLeft - EDGE_PADDING);
+        const top = EDGE_PADDING + Math.random() * (maxTop - EDGE_PADDING);
+        if (isSafePosition(left, top, w, h, forbidden)) {
+          return { left, top };
+        }
+      }
+
+      const corners = [
+        { left: EDGE_PADDING, top: EDGE_PADDING },
+        { left: maxLeft, top: EDGE_PADDING },
+        { left: EDGE_PADDING, top: maxTop },
+        { left: maxLeft, top: maxTop },
+      ];
+      for (const corner of corners) {
+        if (isSafePosition(corner.left, corner.top, w, h, forbidden)) {
+          return corner;
+        }
+      }
+
+      const lastResort = findMarginSafePosition(w, h, forbidden);
+      if (lastResort) return lastResort;
+
+      return { left: EDGE_PADDING, top: EDGE_PADDING };
+    }
+
+    function placeNoButtonBesideYes() {
+      const spacer = document.getElementById('no-btn-spacer');
+      const anchor = spacer || yesBtn;
+      const anchorRect = anchor.getBoundingClientRect();
+      const h = noBtn.offsetHeight;
+      const left = spacer ? anchorRect.left : yesBtn.getBoundingClientRect().right + 24;
+      const top = anchorRect.top + (anchorRect.height - h) / 2;
+      setNoPosition(left, top);
+    }
+
+    function placeNoButtonInitially() {
+      placeNoButtonBesideYes();
+    }
+
+    function showPleadingHeader() {
+      if (hasMoved) return;
+      hasMoved = true;
+      pleadingHeader.classList.remove('hidden-header');
+      pleadingHeader.classList.add('visible-header');
+      requestAnimationFrame(() => {
+        setNoPosition(noPos.left, noPos.top);
+      });
+    }
+
+    function moveNoButton(clientX, clientY) {
+      const rect = noBtn.getBoundingClientRect();
+      const btnCenterX = rect.left + rect.width / 2;
+      const btnCenterY = rect.top + rect.height / 2;
+
+      const dx = clientX - btnCenterX;
+      const dy = clientY - btnCenterY;
+      const distance = Math.sqrt(dx * dx + dy * dy);
+
+      if (distance < FLEE_DISTANCE) {
+        showPleadingHeader();
+
+        const angle = Math.atan2(dy, dx);
+        const push = (FLEE_DISTANCE - distance) * FLEE_STRENGTH;
+        const fleeX = -Math.cos(angle) * push;
+        const fleeY = -Math.sin(angle) * push;
+
+        const currentLeft = parseFloat(noBtn.style.left) || noPos.left || rect.left;
+        const currentTop = parseFloat(noBtn.style.top) || noPos.top || rect.top;
+
+        setNoPosition(currentLeft + fleeX, currentTop + fleeY, angle);
+      }
+    }
+
+    requestAnimationFrame(() => {
+      requestAnimationFrame(placeNoButtonInitially);
+    });
+    window.addEventListener('resize', () => {
+      if (!hasMoved) placeNoButtonBesideYes();
+      else setNoPosition(noPos.left, noPos.top);
+    });
+
+    document.addEventListener('mousemove', (e) => {
+      moveNoButton(e.clientX, e.clientY);
+    });
+
+    document.addEventListener('touchmove', (e) => {
+      if (e.touches.length > 0) {
+        moveNoButton(e.touches[0].clientX, e.touches[0].clientY);
+      }
+    }, { passive: true });
+
+    yesBtn.addEventListener('click', () => {
+      successOverlay.classList.remove('opacity-0', 'pointer-events-none');
+      successOverlay.classList.add('opacity-100', 'pointer-events-auto');
+      successCard.classList.remove('scale-90');
+      successCard.classList.add('scale-100');
+
+      const hearts = ['💕', '💖', '💗', '🌹', '✨'];
+      for (let i = 0; i < 20; i++) {
+        setTimeout(() => {
+          const el = document.createElement('div');
+          el.textContent = hearts[Math.floor(Math.random() * hearts.length)];
+          el.className = 'fixed text-2xl pointer-events-none z-40';
+          el.style.left = Math.random() * 100 + 'vw';
+          el.style.top = '-40px';
+          el.style.transition = 'top 3s ease-out, opacity 3s ease-out';
+          document.body.appendChild(el);
+          requestAnimationFrame(() => {
+            el.style.top = '110vh';
+            el.style.opacity = '0';
+          });
+          setTimeout(() => el.remove(), 3200);
+        }, i * 120);
+      }
+    });
+
+    noBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      showPleadingHeader();
+      const w = noBtn.offsetWidth;
+      const h = noBtn.offsetHeight;
+      const spot = findRandomSafePosition(w, h, getForbiddenRects());
+      setNoPosition(spot.left, spot.top);
+    });
+  </script>
+</body>
+</html>
